@@ -202,19 +202,21 @@ export default function ManageAppointment(props) {
           value={appointment.time}
         />
 
-        <Button
-          className='appt-form__cancel'
-          type='button'
-          text='Cancel'
-          onClick={handleCancel}
-          variant='secondary'
-        />
+        <div className="appt-form__action-bar">
+          <Button
+            className='appt-form__cancel'
+            type='button'
+            text='Cancel'
+            onClick={handleCancel}
+            variant='secondary'
+          />
 
-        <Button
-          type="submit"
-          disabled={isFormSubmitted}
-          text={isFormSubmitted ? "Saving..." : "Save Appointment"}
-        />
+          <Button
+            type="submit"
+            disabled={isFormSubmitted}
+            text={isFormSubmitted ? "Saving..." : "Save Appointment"}
+          />
+        </div>
       </Form>
     </>
   );
