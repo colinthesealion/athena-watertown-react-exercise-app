@@ -1,6 +1,5 @@
 import React from "react";
 import { Redirect, useParams } from "react-router-dom";
-import Input from "./reusable/Input";
 import * as api from "./api/appointmentApi";
 import { toast } from "react-toastify";
 import moment from 'moment-timezone';
@@ -8,6 +7,7 @@ import Heading from '@athena/forge/Heading';
 import Form from '@athena/forge/Form';
 import FormField from '@athena/forge/FormField';
 import Button from '@athena/forge/Button';
+import DateInput from '@athena/forge/DateInput';
 
 const browserTime = moment.tz.guess();
 
@@ -144,10 +144,10 @@ export default function ManageAppointment(props) {
     });
   }, [appointment, setAppointment]);
 
-  const handleDayChange = React.useCallback((day) => {
+  const handleDayChange = React.useCallback((event) => {
     setAppointment({
       ...appointment,
-      day: moment.tz(day, browserTime).format('YYYY-MM-DD'),
+      day: moment.tz(event.target.value, browserTime).format('YYYY-MM-DD'),
     });
   }, [appointment, setAppointment]);
 
@@ -156,12 +156,13 @@ export default function ManageAppointment(props) {
     return <Redirect to={`/appointments/${dayString}`} />;
   }
   if (isLoading) return "Loading... 🦄";
+
   return (
     <>
       <Heading
-        headingTag='h1'
+        headingTag="h1"
         text={`${appointment.id ? 'Update' : 'Add'} Appointment`}
-        variant='page'
+        variant="page"
       />
       <Form
         nested={false}
@@ -181,14 +182,14 @@ export default function ManageAppointment(props) {
         />
 
         <FormField
-          // inputAs={DateInput}
+          inputAs={DateInput}
           name="day"
           labelText="Appointment Date"
           type="day"
           id="appointment-date"
           error={errors.day}
           onChange={handleDayChange}
-          value={appointment.day}
+          value={moment.tz(appointment.day, browserTime).toDate()}
         />
 
         <FormField

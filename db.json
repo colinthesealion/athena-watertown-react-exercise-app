@@ -14,6 +14,11 @@
       "id": 3,
       "date": "2019-10-24T14:24:00.000Z",
       "appointmentType": "My Appointment"
+    },
+    {
+      "id": 4,
+      "date": "2019-10-19T04:12:00.000Z",
+      "appointmentType": "check-up"
     }
   ]
 }
