@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@athena/forge": "^3.0.0-alpha.6",
     "@testing-library/cypress": "^5.0.0",
     "@testing-library/react": "^9.1.4",
     "cypress": "^3.4.1",
@@ -41,5 +42,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "node-sass": "^4.12.0"
   }
 }

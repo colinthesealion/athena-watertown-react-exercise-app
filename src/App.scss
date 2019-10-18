@@ -1,0 +1,40 @@
+@import '~@athena/forge/sass/forge-abstracts';
+
+body {
+  margin: 0;
+}
+
+.ah_app {
+
+  &{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .ah_app--logo {
+    display: block;
+    margin: map-get($global-margin, small) map-get($global-margin, medium);
+  }
+
+  .ah_app--header {
+    background-color: map-get($color-brand, default);
+    height: 42px;
+  }
+
+  .ah_app--body {
+    display: flex;
+    flex: 1;
+  }
+
+  .ah_app--navigation {
+    background-color: map-get($color-background, light);
+    padding: map-get($global-padding, large) 0;
+    flex: 0 0 200px;
+  }
+
+  .ah_app--main {
+    flex: 1;
+    padding: map-get($global-padding, medium) map-get($global-padding, large);
+  }
+}
