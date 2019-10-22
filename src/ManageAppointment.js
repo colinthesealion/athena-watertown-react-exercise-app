@@ -41,6 +41,7 @@ export default function ManageAppointment(props) {
   const [isLoading, setIsLoading] = React.useState(true);
   const [isFormSubmitted, setIsFormSubmitted] = React.useState(false);
   const [redirect, setRedirect] = React.useState(false);
+  const [cancel, setCancel] = React.useState(false);
   const { appointmentId, day } = useParams();
   React.useEffect(() => {
     // IOW, if editing.
@@ -80,8 +81,8 @@ export default function ManageAppointment(props) {
   }, [setRedirect]);
 
   const handleCancel = React.useCallback(() => {
-    setRedirect(true);
-  }, [setRedirect]);
+    setCancel(true);
+  }, [setCancel]);
 
   const isValid = React.useCallback(() => {
     const err = {};
@@ -153,6 +154,11 @@ export default function ManageAppointment(props) {
     const date = day.format('ddd MMM Do');
     const time = day.format('HH:mm z');
     return <Redirect to={`/appointments/${dayString}?id=${id}&type=${type}&date=${date}&time=${time}`} />;
+  }
+  if (cancel) {
+    const day = moment.tz(`${appointment.day} ${appointment.time}`, browserTime);
+    const dayString = day.format('YYYY-MM-DD');
+    return <Redirect to={`/appointments/${dayString}`} />;
   }
   if (isLoading) return "Loading... 🦄";
 
