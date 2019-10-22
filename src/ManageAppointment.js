@@ -1,9 +1,13 @@
 import React from "react";
 import { Redirect, useParams } from "react-router-dom";
-import Input from "./reusable/Input";
 import * as api from "./api/appointmentApi";
 import { toast } from "react-toastify";
 import moment from 'moment-timezone';
+import Heading from '@athena/forge/Heading';
+import Form from '@athena/forge/Form';
+import FormField from '@athena/forge/FormField';
+import Button from '@athena/forge/Button';
+import DateInput from '@athena/forge/DateInput';
 
 const browserTime = moment.tz.guess();
 
@@ -81,6 +85,10 @@ export default function ManageAppointment(props) {
     toast.success(`${appointmentType} appointment scheduled for ${day} at ${time} 🎉`);
   }, [setRedirect]);
 
+  const handleCancel = React.useCallback(() => {
+    setRedirect(true);
+  }, [setRedirect]);
+
   const isValid = React.useCallback(() => {
     const err = {};
     if (!appointment.appointmentType) {
@@ -136,10 +144,10 @@ export default function ManageAppointment(props) {
     });
   }, [appointment, setAppointment]);
 
-  const handleDayChange = React.useCallback((day) => {
+  const handleDayChange = React.useCallback((event) => {
     setAppointment({
       ...appointment,
-      day: moment.tz(day, browserTime).format('YYYY-MM-DD'),
+      day: moment.tz(event.target.value, browserTime).format('YYYY-MM-DD'),
     });
   }, [appointment, setAppointment]);
 
@@ -148,46 +156,68 @@ export default function ManageAppointment(props) {
     return <Redirect to={`/appointments/${dayString}`} />;
   }
   if (isLoading) return "Loading... 🦄";
+
   return (
     <>
-      <h1>{appointment.id ? 'Update' : 'Add'} Appointment</h1>
-      <form onSubmit={saveAppointment}>
-        <Input
-          name="appointmentType"
-          label="Appointment Type"
-          type="text"
-          error={errors.appointmentType}
+      <Heading
+        headingTag="h1"
+        text={`${appointment.id ? 'Update' : 'Add'} Appointment`}
+        variant="page"
+      />
+      <Form
+        nested={false}
+        onSubmit={saveAppointment}
+        includeSubmitButton={false}
+        requiredVariation="allFieldsRequired"
+        className="appt-form"
+      >
+        <FormField
           id="appointment-type"
+          labelText="Appointment Type"
+          name="appointmentType"
+          error={errors.appointmentType}
           onChange={handleChange}
           value={appointment.appointmentType}
+          required
         />
 
-        <Input
+        <FormField
+          inputAs={DateInput}
           name="day"
-          label="Apppointment Date"
-          id="appointment-date"
+          labelText="Appointment Date"
           type="day"
+          id="appointment-date"
           error={errors.day}
           onChange={handleDayChange}
-          value={appointment.day}
+          value={moment.tz(appointment.day, browserTime).toDate()}
         />
 
-        <Input
+        <FormField
           name="time"
-          label="Appointment Time"
+          labelText="Appointment Time"
           type="time"
-          error={errors.time}
           id="appointment-time"
+          error={errors.day}
           onChange={handleChange}
           value={appointment.time}
         />
 
-        <input
-          type="submit"
-          disabled={isFormSubmitted}
-          value={isFormSubmitted ? "Saving..." : "Save Appointment"}
-        />
-      </form>
+        <div className="appt-form__action-bar">
+          <Button
+            className='appt-form__cancel'
+            type='button'
+            text='Cancel'
+            onClick={handleCancel}
+            variant='secondary'
+          />
+
+          <Button
+            type="submit"
+            disabled={isFormSubmitted}
+            text={isFormSubmitted ? "Saving..." : "Save Appointment"}
+          />
+        </div>
+      </Form>
     </>
   );
 }
