@@ -1,7 +1,6 @@
 import React from "react";
 import { Redirect, useParams } from "react-router-dom";
 import * as api from "./api/appointmentApi";
-import { toast } from "react-toastify";
 import moment from 'moment-timezone';
 import Heading from '@athena/forge/Heading';
 import Form from '@athena/forge/Form';
@@ -77,12 +76,7 @@ export default function ManageAppointment(props) {
   }, [appointmentId, day, setAppointment, setIsLoading]);
 
   const handleSave = React.useCallback((savedAppointment) => {
-    const { appointmentType } = savedAppointment;
-    const date = moment.tz(savedAppointment.date, browserTime);
-    const day = date.format('ddd MMM Do');
-    const time = date.format('HH:mm z');
     setRedirect(true);
-    toast.success(`${appointmentType} appointment scheduled for ${day} at ${time} 🎉`);
   }, [setRedirect]);
 
   const handleCancel = React.useCallback(() => {
@@ -152,8 +146,13 @@ export default function ManageAppointment(props) {
   }, [appointment, setAppointment]);
 
   if (redirect) {
-    const dayString = moment.tz(appointment.day, browserTime).format('YYYY-MM-DD');
-    return <Redirect to={`/appointments/${dayString}`} />;
+    const day = moment.tz(`${appointment.day} ${appointment.time}`, browserTime);
+    const dayString = day.format('YYYY-MM-DD');
+    const type = appointment.appointmentType;
+    const id = appointment.id || (type + day.toISOString());
+    const date = day.format('ddd MMM Do');
+    const time = day.format('HH:mm z');
+    return <Redirect to={`/appointments/${dayString}?id=${id}&type=${type}&date=${date}&time=${time}`} />;
   }
   if (isLoading) return "Loading... 🦄";
 
