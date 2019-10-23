@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link, Redirect, useParams } from "react-router-dom";
-import DayPicker from 'react-day-picker';
+import Toast from '@athena/forge/Toast';
+import DateInput  from '@athena/forge/DateInput';
 import moment from 'moment-timezone';
-import 'react-day-picker/lib/style.css';
+import queryString from 'query-string';
 
 import * as api from './api/appointmentApi';
 
@@ -20,7 +21,7 @@ function Appointment(props) {
   );
 }
 
-export default function Appointments() {
+export default function Appointments(props) {
   const [appointments, setAppointments] = React.useState([]);
   const params = useParams();
   const [day, setDay] = React.useState(
@@ -46,10 +47,16 @@ export default function Appointments() {
     return <Redirect to={`/add-appointment/${dayString}`} />;
   }
   else {
+    const values = queryString.parse(props.location.search);
     return (
       <>
         <h1>Appointments</h1>
-        <DayPicker onDayClick={setDay} selectedDays={[day]} />
+        <DateInput
+          onSelect={setDay} 
+          value={day}
+          inline
+        />
+        {/*<DayPicker onDayClick={setDay} selectedDays={[day]} />*/}
         <br />
         <button onClick={addAppointment}>Add Appointment</button>
         <ul>
@@ -57,6 +64,15 @@ export default function Appointments() {
             (a, b) => (a.date < b.date) ? -1 : a.date === b.date ? 0 : 1
           ).map(Appointment)}
         </ul>
+        {values.id &&
+          <Toast
+            id={values.id}
+            headerText="Appointment Scheduled"
+            alertType="success"
+          >
+            {values.type} scheduled for {values.date} at {values.time}
+          </Toast>
+        }
       </>
     );
   }

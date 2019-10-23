@@ -3,7 +3,6 @@ import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import App from "./App";
 import '@athena/forge/dist/forge.css';
-import "react-toastify/dist/ReactToastify.css";
 
 ReactDOM.render(
   <Router>

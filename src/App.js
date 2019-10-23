@@ -3,7 +3,6 @@ import { Route, Switch } from "react-router-dom";
 import Root from '@athena/forge/Root';
 import ManageAppointment from './ManageAppointment';
 import Appointments from './Appointments';
-import { ToastContainer } from "react-toastify";
 
 import './App.scss';
 import leaf from './leaf.svg';
@@ -11,7 +10,6 @@ import leaf from './leaf.svg';
 function App() {
   return (
     <Root className="ah_app">
-      <ToastContainer />
       <header className="ah_app--header">
         <img src={leaf} alt="leaf logo" height="25" className="ah_app--logo"/>
       </header>
