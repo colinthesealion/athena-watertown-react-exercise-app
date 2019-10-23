@@ -1,10 +1,9 @@
 import React from 'react';
 import { Link, Redirect, useParams } from "react-router-dom";
-import DayPicker from 'react-day-picker';
 import Toast from '@athena/forge/Toast';
+import DateInput  from '@athena/forge/DateInput';
 import moment from 'moment-timezone';
 import queryString from 'query-string';
-import 'react-day-picker/lib/style.css';
 
 import * as api from './api/appointmentApi';
 
@@ -52,7 +51,12 @@ export default function Appointments(props) {
     return (
       <>
         <h1>Appointments</h1>
-        <DayPicker onDayClick={setDay} selectedDays={[day]} />
+        <DateInput
+          onSelect={setDay} 
+          value={day}
+          inline
+        />
+        {/*<DayPicker onDayClick={setDay} selectedDays={[day]} />*/}
         <br />
         <button onClick={addAppointment}>Add Appointment</button>
         <ul>
