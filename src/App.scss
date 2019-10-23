@@ -43,13 +43,19 @@ body {
     & {
       margin-top: map-get($global-padding, large);
     }
-  
+
     .appt-form__action-bar {
       margin-top: map-get($global-padding, large);
     }
-    
+
     .appt-form__cancel {
       margin-right: map-get($global-padding, medium);
     }
   }
+
+  .schedule {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
 }
