@@ -2,6 +2,10 @@ import React from 'react';
 import { Link, Redirect, useParams } from "react-router-dom";
 import Toast from '@athena/forge/Toast';
 import DateInput  from '@athena/forge/DateInput';
+import Button  from '@athena/forge/Button';
+import Heading  from '@athena/forge/Heading';
+import List  from '@athena/forge/List';
+import ListItem  from '@athena/forge/ListItem';
 import moment from 'moment-timezone';
 import queryString from 'query-string';
 
@@ -11,14 +15,33 @@ const browserTime = moment.tz.guess();
 
 function Appointment(props) {
   return (
-    <li key={props.id}>
+    <ListItem key={props.id}>
       {moment.tz(props.date, browserTime).format('YYYY-MM-DD HH:mm z')}
       <br />
       <Link id={`appointment-${props.id}`} to={`/update-appointment/${props.id}`}>
         {props.appointmentType}
       </Link>
-    </li>
+    </ListItem>
   );
+}
+
+function AppointmentList(props) {
+  const { dayAppointments } = props;
+
+  return !dayAppointments || dayAppointments.length === 0
+  ? (
+    <div className="schedule__no-upcoming">No upcoming appointments</div>
+  )
+  : ( <List
+        className="fe_u_margin--top-medium"
+        aria-labelledby="upcoming-appointments"
+        dividers
+      >
+        {dayAppointments.sort(
+          (a, b) => (a.date < b.date) ? -1 : a.date === b.date ? 0 : 1
+        ).map(Appointment)}
+      </List>
+    )
 }
 
 export default function Appointments(props) {
@@ -50,20 +73,40 @@ export default function Appointments(props) {
     const values = queryString.parse(props.location.search);
     return (
       <>
-        <h1>Appointments</h1>
-        <DateInput
-          onSelect={setDay} 
-          value={day}
-          inline
+        <Heading
+          headingTag="h1"
+          text="Appointments"
+          variant="page"
         />
-        {/*<DayPicker onDayClick={setDay} selectedDays={[day]} />*/}
-        <br />
-        <button onClick={addAppointment}>Add Appointment</button>
-        <ul>
-          {dayAppointments.sort(
-            (a, b) => (a.date < b.date) ? -1 : a.date === b.date ? 0 : 1
-          ).map(Appointment)}
-        </ul>
+        <div className="schedule">
+
+          <section className="fe_u_margin--top-large fe_u_margin--right-large">
+            <DateInput
+              onSelect={setDay}
+              value={day}
+              inline
+            />
+          </section>
+
+          <section className="fe_u_margin--top-large">
+            <Button
+              onClick={addAppointment}
+              text="Add Appointment"
+            />
+            <Heading
+              id="upcoming-appointments"
+              className="fe_u_margin--top-large"
+              text="Schedule"
+              headingTag="h2"
+              variant="section"
+            />
+            <AppointmentList
+              dayAppointments={dayAppointments}
+            />
+          </section>
+
+        </div>
+
         {values.id &&
           <Toast
             id={values.id}
@@ -73,6 +116,7 @@ export default function Appointments(props) {
             {values.type} scheduled for {values.date} at {values.time}
           </Toast>
         }
+
       </>
     );
   }
