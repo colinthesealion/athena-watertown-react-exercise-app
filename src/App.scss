@@ -12,28 +12,28 @@ body {
     min-height: 100vh;
   }
 
-  .ah_app--logo {
+  &__logo {
     display: block;
     margin: map-get($global-margin, small) map-get($global-margin, medium);
   }
 
-  .ah_app--header {
-    background-color: map-get($color-brand, default);
+  &__header {
+    background-color: map-get($color-brand, dark);
     height: 42px;
   }
 
-  .ah_app--body {
+  &__body {
     display: flex;
     flex: 1;
   }
 
-  .ah_app--navigation {
+  &__navigation {
     background-color: map-get($color-background, light);
     padding: map-get($global-padding, large) 0;
     flex: 0 0 200px;
   }
 
-  .ah_app--main {
+  &__main {
     flex: 1;
     padding: map-get($global-padding, medium) map-get($global-padding, large);
   }
