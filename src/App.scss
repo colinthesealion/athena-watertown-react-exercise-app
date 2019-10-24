@@ -1,0 +1,61 @@
+@import '~@athena/forge/sass/forge-abstracts';
+
+body {
+  margin: 0;
+}
+
+.ah_app {
+
+  &{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  &__logo {
+    display: block;
+    margin: map-get($global-margin, small) map-get($global-margin, medium);
+  }
+
+  &__header {
+    background-color: map-get($color-brand, dark);
+    height: 42px;
+  }
+
+  &__body {
+    display: flex;
+    flex: 1;
+  }
+
+  &__navigation {
+    background-color: map-get($color-background, light);
+    padding: map-get($global-padding, large) 0;
+    flex: 0 0 200px;
+  }
+
+  &__main {
+    flex: 1;
+    padding: map-get($global-padding, medium) map-get($global-padding, large);
+  }
+
+  .appt-form {
+
+    & {
+      margin-top: map-get($global-padding, large);
+    }
+
+    .appt-form__action-bar {
+      margin-top: map-get($global-padding, large);
+    }
+
+    .appt-form__cancel {
+      margin-right: map-get($global-padding, medium);
+    }
+  }
+
+  .schedule {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+}
